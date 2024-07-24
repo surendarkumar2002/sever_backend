@@ -2,6 +2,7 @@
 const express=require('express');
 const mongoose=require('mongoose');
 const cors=require('cors');
+require('dotenv').config();
 
 // create an instance of express
 const app=express();
@@ -12,14 +13,18 @@ app.use(cors());
 // let todos=[];
 
 //connecting mongodb
-const username = 'root'; // Replace with your MongoDB username
-const password = encodeURIComponent('9047733109Suri'); // Replace with your MongoDB password
-const cluster = 'cluster0.v4p4pb1.mongodb.net'; // Replace with your cluster address
-const dbName = 'mern-app'; // Replace with your database name
+// const username = 'root'; // Replace with your MongoDB username
+// const password = encodeURIComponent('9047733109Suri'); // Replace with your MongoDB password
+// const cluster = 'cluster0.v4p4pb1.mongodb.net'; // Replace with your cluster address
+// const dbName = 'mern-app'; // Replace with your database name
+const mongoUri = process.env.MONGO_DB_URI; 
 
-const url = `mongodb+srv://${username}:${password}@${cluster}/${dbName}?retryWrites=true&w=majority&appName=Cluster0`;
-
-mongoose.connect(url)
+mongoose.connect(mongoUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => console.log('Connected to MongoDB Atlas'))
+  .catch(err => console.error('Failed to connect to MongoDB Atlas', err));
 // Create schema
 const todoSchema =new mongoose.Schema({
     title:{
